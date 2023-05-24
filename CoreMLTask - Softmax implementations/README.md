@@ -46,11 +46,16 @@ Test Loss: 2.577
 
 Test Accuracy: **61.96%**
 
+Precision: 0.6097 | Recall: 0.6143 | F1 Score: 0.6097
+
+
 ![](assets/models/logsoftmaxv0-lossepoch.png)
 
 The training and validation loss didn't follow each other which seems to indicate a loss in precision of model, needing further evaluation.
 
 ![](assets/models/logsoftmaxv0-lrbn.png)
+
+![](assets/models/logsoftmaxv1_confusionmatrix.png)
 --
 
 ### Gumbel-Softmax
