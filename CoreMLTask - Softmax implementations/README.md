@@ -37,6 +37,11 @@ Test Accuracy: **5.696 %**
 
 ![](assets/models/normiesoftmax-lrbn.png)
 
+![](assets/models/softmaxv1_confusionmatrix.png)
+
+Some big issue with the model shown by the following confusion matrix:
+
+
 **Using just 20 Super Classes**
 
 When I trained the model on just the 20 super classes, the accuracy of Softmax for 50 epochs was ~ 45%, which decreases drastically on increasing it to 100 classes. Further showing that the complexity increases drastically with increasing the number of classes.
