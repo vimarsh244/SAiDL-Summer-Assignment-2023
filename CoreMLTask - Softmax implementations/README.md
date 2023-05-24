@@ -36,6 +36,11 @@ Test Accuracy: **5.696 %**
 ![](assets/models/normiesoftmax-lossepoch.png)
 
 ![](assets/models/normiesoftmax-lrbn.png)
+
+**Using just 20 Super Classes**
+
+When I trained the model on just the 20 super classes, the accuracy of Softmax for 50 epochs was ~ 45%, which decreases drastically on increasing it to 100 classes. Further showing that the complexity increases drastically with increasing the number of classes.
+
 --
 
 ### LogSoftmax
@@ -49,13 +54,14 @@ Test Accuracy: **61.96%**
 Precision: 0.6097 | Recall: 0.6143 | F1 Score: 0.6097
 
 
-![](assets/models/logsoftmaxv0-lossepoch.png)
+![](assets/models/logsoftmax/logsoftmaxv0-lossepoch.png)
 
 The training and validation loss didn't follow each other which seems to indicate a loss in precision of model, needing further evaluation.
 
-![](assets/models/logsoftmaxv0-lrbn.png)
+![](assets/models/logsoftmax/logsoftmaxv0-lrbn.png)
 
-![](assets/models/logsoftmaxv1_confusionmatrix.png)
+![](assets/models/logsoftmax/logsoftmax_confusionmatrix_v1_highres.png)
+
 --
 
 ### Gumbel-Softmax
