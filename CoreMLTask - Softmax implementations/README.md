@@ -16,35 +16,42 @@ Neural networks have revolutionized image classification tasks, and the softmax 
 
 ![](assets/softmaxworkingsimple.jpg)
 
-To address this issue, alternative softmax implementations have been proposed, such as logsoftmax and Gumbel-Softmax, which aim to reduce the computational complexity while maintaining performance.
-
-logsoftmax reduces this this complexity to O(logN)
+To address this issue, alternative softmax implementations have been proposed, such as logsoftmax and Gumbel-Softmax, which aim to reduce the computational complexity while maintaining performance. In this article, I try to implement and understand the performance differences between various implementations.
 
 ---
 
 ## Methodology:
 
-In this study, we employ the CIFAR-100 dataset, consisting of 100 classes of images, to compare the performance of different softmax variations in CNN models. We first develop a baseline CNN model with the standard softmax implementation. Then, we create two additional models using the same architecture but replacing the softmax layer with logsoftmax and Gumbel-Softmax, etc.
+In this study, we employ the CIFAR-100 dataset, consisting of 100 classes of images, to compare the performance of different softmax variations in CNN models. First I developed a baseline CNN model with the standard softmax implementation. Then, created additional models using the same architecture but replacing the softmax layer with logsoftmax and Gumbel-Softmax, etc.
+
+**Architecture of the model**
+
+The CNN is architected on Resnet12 model. I tried creating my own CNN with several Convolution and activation layers, but accuracy was less compared when compared to already established layer architectures as that of Resnet12.
+
+![Resnet 12 structure](https://www.researchgate.net/profile/Seunghyoung-Ryu/publication/329954455/figure/fig1/AS:725290594623488@1549934161033/The-structure-of-ResNet-12.png)
 
 
-### Standard Softmax Mode
 
-Test Loss: 4.564
+### Standard Softmax
 
-Test Accuracy: **5.696 %**
+Test Loss: 4.54
 
-![](assets/models/normiesoftmax-lossepoch.png)
+Test Accuracy: **8.09%**
 
-![](assets/models/normiesoftmax-lrbn.png)
+Precision: 0.0115 | Recall: 0.0817 | F1 Score: 0.0200
 
-![](assets/models/softmaxv1_confusionmatrix.png)
+![](assets/softmax/accvsloss.png) ![](assets/softmax/lossvsepochs.png)
 
-Some big issue with the model shown by the following confusion matrix:
+![](assets/softmax/confusion_matrix.png)
 
 
 **Using just 20 Super Classes**
 
 When I trained the model on just the 20 super classes, the accuracy of Softmax for 50 epochs was ~ 45%, which decreases drastically on increasing it to 100 classes. Further showing that the complexity increases drastically with increasing the number of classes.
+
+**Hypothesis: Reason for low performance of Softmax, when compared to others**
+
+
 
 --
 
@@ -88,4 +95,10 @@ The above accuracy was with the value of λ = 3, on having value <=1 the accurac
 ![](assets/models/gumbel-lossepoch.png)
 
 
+
+
+
+### References
+
+http://cs231n.stanford.edu/reports/2017/pdfs/130.pdf
 
