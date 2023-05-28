@@ -1,8 +1,11 @@
 \documentclass{article}
 
 \usepackage{graphicx}
+\usepackage[superscript,biblabel]{cite}
 
-% \usepackage[a4paper, portrait, margin=1in]{geometry}
+\bibliographystyle{unsrt}
+
+\usepackage[a4paper, portrait, margin=1in]{geometry}
 
 \usepackage{amsmath}
 \graphicspath{ {./images/} }
@@ -22,9 +25,9 @@
 
 Neural networks have revolutionized image classification tasks, and the softmax function has become a popular choice for generating probabilistic outputs. However, its time complexity grows linearly with the number of classes, making it computationally expensive for large-scale classification problems.
 
-\\ 
+\vspace{6pt} \vspace{6pt}
 \includegraphics[width=0.6\linewidth]{images/softmaxworkingsimple.jpg}
-\\ 
+\vspace{6pt}
 
 To address this issue, alternative softmax implementations have been proposed, such as logsoftmax and Gumbel-Softmax, which aim to reduce the computational complexity while maintaining performance. In this article, I try to implement and understand the performance differences between various implementations.
 
@@ -66,16 +69,13 @@ On adding the Softmax layer to the base model, the training results were as foll
 
 \includegraphics[width=0.5\linewidth]{images/Softmax/accvsloss.png}
 \includegraphics[width=0.5\linewidth]{images/Softmax/lossvsepochs.png}
-\newline
+\vspace{6pt}
 
 
 \textbf{Confusion Matrix}
 
 \includegraphics[width=0.9\linewidth]{images/Softmax/highres-softmax-resnet12.png}
 
-\textbf{Using just 20 Super Classes}
-
-When I trained the model on just the 20 super classes, the accuracy of Softmax for 50 epochs was ~ 45 , which decreases drastically on increasing it to 100 classes. Further showing that the complexity increases drastically with increasing the number of classes.
 
 \subsection{LogSoftmax}
 
@@ -113,7 +113,7 @@ On implementing LogSoftmax instead of standard softmax, the accuracy improved dr
 
 \subsection{Gumbel Softmax}
 
-Gumbel-Softmax is another alternative to the standard softmax function that introduces a stochastic component. It uses the Gumbel-Max trick to sample from the softmax distribution efficiently. The Gumbel-Softmax function is defined as follows:
+Gumbel-Softmax\cite{gumbel} is another alternative to the standard softmax function that introduces a stochastic component. It uses the Gumbel-Max trick to sample from the softmax distribution efficiently. The Gumbel-Softmax function is defined as follows:
 
 \[
 \text{Gumbel-Softmax}(x_i) = \frac{\exp((\log(p_i) + g_i)/\lambda)}{\sum_{j=1}^{N}\exp((\log(p_j) + g_j)/\lambda)}
@@ -146,6 +146,21 @@ The above accuracy was with the value of \(\lambda\)= 3, on having value <=1 the
 
 \includegraphics[width=0.9\linewidth]{images/GumbelSoftmax/gumbel-cm.png}
 
+--
+\vspace{6pt}
+For \(\lambda\) = -1.5:
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ Accuracy & Precision & Recall & F1 Score \\ 
+ 8.81\% & 0.0155 & 0.0888 & 0.0258 \\
+ \hline
+\end{tabular}
+\end{center}
+
+Gumbel like softmax gives poor performance. The scaling factor of lambda, does help as it reduces the exponents (explained later), but this approach does not scale well with classes.
+
 
 
 \subsection{Log Gumbel Softmax}
@@ -162,7 +177,7 @@ where \(p_i\) is the \(i\)-th element of the input vector, \(g_i\) is a sample f
 
 The Gumbel noise introduces randomness and allows for the relaxation of discrete distributions into continuous relaxations. The temperature parameter \(\lambda\) controls the smoothness of the distribution and the trade-off between exploration and exploitation.
 
-\newline
+\vspace{6pt}
 For \(\lambda\) = 3:
 
 \begin{center}
@@ -184,7 +199,7 @@ For \(\lambda\) = 3:
 
 --
 
-\newline
+\vspace{6pt}
 For \(\lambda\) = -1.5:
 
 \begin{center}
@@ -202,10 +217,17 @@ For \(\lambda\) = -1.5:
 
 \subsection{Other tries}
 
-What if instead of have \(e^z\) we have \(2^z\) in the softmax function. This does not change a lot in terms of mathematical operations, but does help in computational scaling. As by the use of bitwise operator computers can quickly calculate \(2^z\).
+What if instead of have \(e^z\) we have \(2^z\) in the softmax function. This does not change a lot in terms of mathematical operations, but does help in computational scaling. As by the use of bitwise operator computers can quickly calculate \(2^z\). This does not seem to do anything, as it is the same computation. Although on using low level operations, by using bitwise operations, such \(2^z_i\) operations can be optimized.
 
-Many other tries were made.. add abt Z, sin etc. and why aint working
+I tried various other variations of softmax-like operations: 
 
+- \(e^P[Z<z_i]\)
+
+- \(e^sin(z_i\)
+
+- Sparsemax\cite{sparsemax}
+
+None of these gave decent accuracies. All were around that of Softmax, with similar functioning.
 
 
 
@@ -271,14 +293,19 @@ The log softmax function is therefore preffered over softmax when dealing with m
 
 In terms of accuracy, log softmax is much more balanced and probabilities are more useful when compared to softmax, especially in scenarios where there are significant differences in the magnitudes of the input vector elements.
 
-\section{References}
+\subsection{Using 20 Super Classes}
 
-http://cs231n.stanford.edu/reports/2017/pdfs/130.pdf
+When I trained the model on just the 20 super classes, the accuracy with activation layer being Softmax for 50 epochs was ~ 45\% , which decreases drastically on increasing it to 100 classes. Further showing that the complexity increases drastically with increasing the number of classes.
 
-https://arxiv.org/pdf/1611.01144v5.pdf
+\vspace{6pt}
+\vspace{6pt}
 
-https://arxiv.org/pdf/1611.00712.pdf
+Other references
+\cite{cifar100}
+\cite{fast-softmax-sampling} \cite{maddison2017concrete} \cite{alitabakds_my-first-project_2023}
 
+
+\bibliography{test}
 
 
 
